@@ -37,3 +37,13 @@ jobs:
 
       - name: Build project
         run: trunk build --release
+
+
+      - name: Publish
+        uses: cloudflare/pages-action@1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: vivax.dev # e.g. 'my-project'
+          directory: dist # e.g. 'dist'
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
