@@ -22,12 +22,18 @@ jobs:
           toolchain: nightly
 
       - uses: Swatinem/rust-cache@v2
+        with:
+          cache-on-failure: "true"
+          cache-all-crates: "true"
 
       - name: Install trunk
         run: cargo install trunk
 
       - name: Install Fluent Web Cli
         run: cargo +nightly install fluent_web
+
+      - name: Create dummy src
+        run: mkdir src; touch src/main.rs
 
       - name: Build project
         run: trunk build --release
