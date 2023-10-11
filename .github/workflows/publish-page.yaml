@@ -15,11 +15,13 @@ jobs:
         with:
           toolchain: stable
           target: wasm32-unknown-unknown
+          profile: minimal
 
       - name: Install Rust[Nightly]
         uses: actions-rs/toolchain@v1
         with:
           toolchain: nightly-2023-10-10
+          profile: minimal
 
       - uses: Swatinem/rust-cache@v2
         with:
