@@ -1,7 +1,31 @@
 <template>
-    <h1>Work in progress</h1>
-    So I bought a domain, guess I need a site...
-    Well lets see what I cook up in the following days.
+    <div id="title">
+        <h1><span id="name">Vivax</span></h1>
+        <h2><component src="super::Role"></component></h2>
+    </div>
 
-    (This was mainly a proof of concept of the CD pipeline for this site)
+    JUST FYI: This is a work in progress
 </template>
+
+<style>
+#title {
+    width: 100%;
+    text-align: center;
+}
+
+h1 {
+    font-size: 8rem;
+    margin: 0px;
+}
+
+h2 {
+    font-size: 2rem;
+    margin: 0px;
+}
+
+#name {
+    background: linear-gradient(90deg, rgba(200,0,236,1) 0%, rgba(204,7,255,1) 59%, rgba(16,41,233,1) 100%);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+</style>

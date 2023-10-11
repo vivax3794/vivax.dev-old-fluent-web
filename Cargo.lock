@@ -96,6 +96,7 @@ name = "my_site"
 version = "0.1.0"
 dependencies = [
  "fluent_web_runtime",
+ "js-sys",
 ]
 
 [[package]]

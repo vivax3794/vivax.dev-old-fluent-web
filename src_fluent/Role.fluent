@@ -1,0 +1,66 @@
+<template>
+    <div $if="role.link.is_some()">
+        <a =href="role.link.unwrap_or_default()" id="role"> - {role.title}<a>
+    </div>
+    <div $if="role.link.is_none()">
+        <span id="role"> - {role.title}<span>
+    </div>
+</template>
+
+<define>
+// TODO: Maybe make this change at intervals
+
+struct Role {
+    title: &'static str,
+    link: Option<&'static str>,
+}
+
+const ROLES: &[Role] = &[
+    Role {
+        title: "Game Developer",
+        link: Some("https://vivax.itch.io/")
+    },
+    Role {
+        title: "Streamer",
+        link: Some("https://twitch.tv/vivax3794")
+    },
+    Role {
+        title: "Artist",
+        link: None,
+    },
+    Role {
+        title: "Web Developer",
+        link: None
+    },
+    Role {
+        title: "Blogger",
+        link: Some("https://blog.vivax.dev")
+    }
+];
+
+fn random_number(len: usize) -> usize {
+    let x = js_sys::Math::random();
+    let y = (x * len as f64).floor();
+    y as usize
+}
+fn random_role() -> &'static Role {
+   &ROLES[random_number(ROLES.len())] 
+}
+</define>
+
+<data>
+let mut role: &'static Role = random_role();
+</data>
+
+<style>
+#role {
+    font-style: italic;
+    color: gray;
+}
+#role:link {
+    color: #1a539e
+}
+#role:visited {
+    color: #7b1a9e;
+}
+</style>
