@@ -30,7 +30,7 @@ jobs:
         run: cargo install trunk
 
       - name: Install Fluent Web Cli
-        run: cargo +nightly install fluent_web
+        run: cargo +nightly-2023-10-10 install fluent_web
 
       - name: Create dummy src
         run: mkdir src; touch src/main.rs
