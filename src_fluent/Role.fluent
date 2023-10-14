@@ -1,6 +1,6 @@
 <template>
     <div $if="role.link.is_some()">
-        <a =href="role.link.unwrap_or_default()" id="role"> - {role.title}<a>
+        <a =href="role.link.unwrap()" id="role"> - {role.title}</a>
     </div>
     <div $if="role.link.is_none()">
         <span id="role"> - {role.title}<span>
