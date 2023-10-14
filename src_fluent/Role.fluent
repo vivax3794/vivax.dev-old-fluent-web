@@ -1,41 +1,64 @@
 <template>
-    <div $if="role.link.is_some()">
-        <a =href="role.link.unwrap()" id="role"> - {role.title}</a>
-    </div>
-    <div $if="role.link.is_none()">
-        <span id="role"> - {role.title}<span>
-    </div>
+    <span id="role"> - {role}<span>
+    <span $if="*current < next_role.len()" id="random">{random_chr}</span>
 </template>
 
-<define>
-// TODO: Maybe make this change at intervals
+<setup>
+let weak = self.weak();
+interval(move || change_role(weak.clone()), 100);
+let weak = self.weak();
+interval(move || set_random_chr(weak.clone()), 50);
+let weak = self.weak();
+interval(move || reset(weak.clone()), 5000);
+</setup>
 
-struct Role {
-    title: &'static str,
-    link: Option<&'static str>,
+<data>
+let mut role: String = String::new();
+let mut next_role: &'static str = random_role();
+let mut current: usize = 0;
+
+let mut random_chr: char = 'A';
+</data>
+
+<define>
+use fluent_web_runtime::interval;
+use fluent_web_runtime::internal::log;
+
+const ALPHABET: &str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[]{}|:;,.<>?/";
+
+fn change_role(comp: CompRef<Component>) {
+   {
+       unpack!(comp, role, next_role, current);
+       if *current < next_role.len() {
+           role.push(next_role.chars().nth(*current).unwrap());
+           *current += 1;
+       }
+   }
+   update!(comp);
+}
+fn set_random_chr(comp: CompRef<Component>) {
+    {
+        unpack!(comp, random_chr);
+        *random_chr = ALPHABET.chars().nth(random_number(ALPHABET.len())).unwrap();
+    }
+    update!(comp);
+}
+fn reset(comp: CompRef<Component>) {
+    {
+        unpack!(comp, next_role, current, role);
+        *role = String::new();
+        *current = 0;
+        *next_role = random_role();
+    }
+    update!(comp);
 }
 
-const ROLES: &[Role] = &[
-    Role {
-        title: "Game Developer",
-        link: Some("https://vivax.itch.io/")
-    },
-    Role {
-        title: "Streamer",
-        link: Some("https://twitch.tv/vivax3794")
-    },
-    Role {
-        title: "Artist",
-        link: None,
-    },
-    Role {
-        title: "Web Developer",
-        link: None
-    },
-    Role {
-        title: "Blogger",
-        link: Some("https://blog.vivax.dev")
-    }
+const ROLES: &[&'static str] = &[
+    "Game Developer",
+    "Blogger",
+    "Streamer",
+    "Web Developer",
+    "Artist",
 ];
 
 fn random_number(len: usize) -> usize {
@@ -43,24 +66,26 @@ fn random_number(len: usize) -> usize {
     let y = (x * len as f64).floor();
     y as usize
 }
-fn random_role() -> &'static Role {
+fn random_role() -> &'static str {
    &ROLES[random_number(ROLES.len())] 
 }
 </define>
 
-<data>
-let mut role: &'static Role = random_role();
-</data>
+
 
 <style>
 #role {
     font-style: italic;
     color: gray;
 }
-#role:link {
-    color: #1a539e
+#random {
+    color: white;
+    font-family: monospace;
 }
-#role:visited {
-    color: #7b1a9e;
-}
+/* #role:link { */
+/*     color: #1a539e */
+/* } */
+/* #role:visited { */
+/*     color: #7b1a9e; */
+/* } */
 </style>
