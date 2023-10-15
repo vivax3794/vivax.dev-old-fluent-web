@@ -1,0 +1,55 @@
+<template>
+    <div id="bar">
+        <div id="right" class="section">
+            <component @link='"/"' @title='"Home"' src="Link"></component>
+            <div class="sep"></div>
+            <component @link='"/other"' @title='"Other"' src="Link"></component>
+        </div>
+        <div id="left" class="section">
+            <a href="https://github.com/vivax3794/vivax.dev" title="source" id="source">
+                <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png">
+            </a>
+        </div>
+    </div>
+</template>
+
+<define>
+use super::TopBarLink as Link;
+</define>
+
+<style>
+#bar {
+    background-color: #2d2d2d;
+    overflow: hidden;
+    font-size: 1.5rem;
+    padding: 10px;
+
+    display: flex;
+}
+
+.section {
+    display: flex;
+    align-items: center;
+    width: 50%;
+}
+
+.section > * {
+    margin: 5px;
+}
+
+#left {
+    justify-content: flex-end;
+}
+
+#source > img {
+    width: 3rem;
+    filter: invert(1);
+    mix-blend-mode: difference;
+}
+
+.sep {
+    background-color: darkgray;
+    height: 100%;
+    width: 2px;
+}
+</style>

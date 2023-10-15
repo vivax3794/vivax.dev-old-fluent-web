@@ -31,8 +31,14 @@ jobs:
       - name: Install trunk
         run: cargo install trunk
 
+      - name: clone fluent web cli
+        uses: actions/checkout@v4
+        with:
+          repository: "vivax3794/FluentWeb"
+          path: "fluent_web_repo"
+
       - name: Install Fluent Web Cli
-        run: cargo +nightly-2023-10-10 install fluent_web
+        run: cargo +nightly-2023-10-10 install --path ./fluent_web_repo/fluent_web
 
       - name: Create dummy src
         run: mkdir src; touch src/main.rs

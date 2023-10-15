@@ -1,6 +1,8 @@
 <template>
-    <span id="role"> - {role}<span>
-    <span $if="*current < next_role.len()" id="random">{random_chr}</span>
+    <span id="role"> - {role}</span>
+    <span $if="*current < next_role.len()" id="random">
+        {random_chr}
+    </span>
 </template>
 
 <setup>
@@ -9,13 +11,14 @@ interval(move || change_role(weak.clone()), 100);
 let weak = self.weak();
 interval(move || set_random_chr(weak.clone()), 50);
 let weak = self.weak();
-interval(move || reset(weak.clone()), 5000);
+interval(move || reset(weak.clone()), 3000);
 </setup>
 
 <data>
 let mut role: String = String::new();
-let mut next_role: &'static str = random_role();
+let mut next_role: &'static str = ROLES[0];
 let mut current: usize = 0;
+let mut current_role: usize = 0;
 
 let mut random_chr: char = 'A';
 </data>
@@ -45,20 +48,26 @@ fn set_random_chr(comp: CompRef<Component>) {
 }
 fn reset(comp: CompRef<Component>) {
     {
-        unpack!(comp, next_role, current, role);
+        unpack!(comp, next_role, current, role, current_role);
+        *current_role += 1;
+        if *current_role == ROLES.len() {
+            *current_role = 0;
+        }
         *role = String::new();
         *current = 0;
-        *next_role = random_role();
+        *next_role = ROLES[*current_role];
     }
     update!(comp);
 }
 
 const ROLES: &[&'static str] = &[
-    "Game Developer",
-    "Blogger",
-    "Streamer",
     "Web Developer",
+    "Game Developer",
+    "Rustacean",
     "Artist",
+    "Student",
+    "Streamer",
+    "Blogger",
 ];
 
 fn random_number(len: usize) -> usize {
@@ -74,18 +83,17 @@ fn random_role() -> &'static str {
 
 
 <style>
+span {
+    font-size: 3rem;
+}
+
 #role {
     font-style: italic;
     color: gray;
 }
+
 #random {
     color: white;
     font-family: monospace;
 }
-/* #role:link { */
-/*     color: #1a539e */
-/* } */
-/* #role:visited { */
-/*     color: #7b1a9e; */
-/* } */
 </style>

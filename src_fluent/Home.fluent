@@ -1,0 +1,40 @@
+<template>
+    <component src="super::Background"></component>
+    <div id="title">
+        <h1><span id="name">Vivax</span></h1>
+        <component src="super::Role"></component>
+    </div>
+</template>
+
+<style>
+#title {
+    pointer-events: none;
+
+    width: 100%;
+    text-align: center;
+
+    /* From https://css.glass */
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px) invert(1);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+
+    padding-top: 100px;
+    padding-bottom: 100px;
+
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+h1 {
+    font-size: 10rem;
+    margin: 0px;
+}
+
+#name {
+    background: linear-gradient(90deg, rgba(200,0,236,1) 0%, rgba(204,7,255,1) 59%, rgba(16,41,233,1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+</style>

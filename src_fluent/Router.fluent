@@ -1,0 +1,49 @@
+<template>
+    <div $if='&*page == "/"'>
+        <component src="super::Home"></component>
+    </div>
+    <div $if='&*page == "/other"'>
+        <component src="super::Other"></component>
+    </div>
+</template>
+
+<define>
+use std::cell::OnceCell;
+
+thread_local! {
+    static ROUTER: OnceCell<CompRef<Component>> = OnceCell::new();
+}
+
+pub fn navigate(target: &str) {
+    ROUTER.with(|r| {
+        let comp = r.get().unwrap();
+        {
+            unpack!(comp.clone(), page);
+            *page = target.to_owned();
+        }
+        update!(comp.clone());
+    });
+
+    let window = web_sys::window().unwrap();
+    let history = window.history().unwrap();
+    history.push_state_with_url(
+        &wasm_bindgen::JsValue::NULL,
+        "",
+        Some(target),
+    );
+}
+</define>
+
+<data>
+let mut page: String = String::new();
+</data>
+
+<setup>
+let window = web_sys::window().unwrap();
+let document = window.document().unwrap();
+let location = document.location().unwrap();
+
+*page = location.pathname().unwrap();
+
+ROUTER.with(|r| r.set(self.weak()).unwrap());
+</setup>

@@ -1,0 +1,91 @@
+<template>
+    <div id="root" :mousemove="|event: &MouseEvent, _| {
+        *top = event.y() as isize - 150;
+        *left = event.x() as isize - 150;
+    }">
+        <div class="fill" id="vert" --angle="{*angle}deg"></div>
+
+        <div id="ball" --top="{*top}px" --left="{*left}px"></div>
+    </div>
+</template>
+
+<data>
+let mut top: isize = 0;
+let mut left: isize = 0;
+
+let mut angle: f32 = 0.0;
+</data>
+
+<setup>
+let weak = self.weak();
+interval(move || change_angle(weak.clone()), 10);
+</setup>
+
+<define>
+use fluent_web_runtime::interval;
+
+fn change_angle(comp: CompRef<Component>) {
+    {
+        unpack!(comp, angle);
+        *angle += 0.05;
+        if *angle >= 180.0 {
+            *angle = 0.0;
+        }
+    }
+    update!(comp);
+}
+</define>
+
+<style>
+@keyframes move_background {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: 80px 80px;
+    }
+}
+
+#root {
+    cursor: none;
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+
+    background-size: 200% 200%;
+    background-color: white;
+    background-image:
+        repeating-linear-gradient(0deg, grey, grey 3px, transparent 3px, transparent 40px);
+        
+    animation: 
+        0.5s infinite linear move_background;
+
+    z-index: -1;
+}
+
+.fill {
+    background-size: 200% 200%;
+    width: 100%;
+    height: 100%;
+}
+
+#vert {
+    background-image:
+        repeating-linear-gradient(var(--angle), grey, grey 3px, transparent 3px, transparent 40px);
+    /* animation:  */
+    /*     10s infinite ease-in-out alternate move_background; */
+}
+
+#ball {
+    position: absolute;
+    top: var(--top);
+    left: var(--left);
+    background-color: red;
+
+    width: 300px;
+    height: 300px;
+
+    filter: blur(1000px);
+}
+</style>

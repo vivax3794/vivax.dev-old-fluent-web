@@ -97,6 +97,8 @@ version = "0.3.2"
 dependencies = [
  "fluent_web_runtime",
  "js-sys",
+ "wasm-bindgen",
+ "web-sys",
 ]
 
 [[package]]
