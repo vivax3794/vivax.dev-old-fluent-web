@@ -1,6 +1,2 @@
 [watch]
 ignore = ["src"]
-
-[[hooks]]
-stage = "pre_build"
-command = "fluent_web"

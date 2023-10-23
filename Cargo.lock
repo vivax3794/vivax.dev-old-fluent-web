@@ -42,9 +42,9 @@ dependencies = [
 
 [[package]]
 name = "fluent_web_runtime"
-version = "0.3.2"
+version = "0.3.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a03b97698e73f9e836db2d50e10b4b13568c2c4c48f608a439f2dcd535dae396"
+checksum = "9bbafc51bfb0a247afd3db9445644912c8308bd18a23e7eafa632633e62ff74c"
 dependencies = [
  "base64",
  "bincode",
